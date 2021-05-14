@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+    
+  api:
+    build:
+      context: road-tax-management-api 
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" 
+    restart: always
+    depends_on: 
+      - db 
+    links:
+      - db
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/roadtaxmanagement
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres     
+
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: roadtaxmanagement
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/api/data
+
+volumes:
+  db-data:
+
+
+
